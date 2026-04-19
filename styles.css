@@ -1,0 +1,174 @@
+/* Tag Filter Bar - Integrated into File Explorer */
+
+.tag-filter-bar {
+    padding: var(--size-4-2);
+    border-bottom: 1px solid var(--background-modifier-border);
+    background: var(--background-secondary);
+}
+
+.tag-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--size-4-2);
+    font-weight: 600;
+    font-size: var(--font-ui-small);
+    color: var(--text-normal);
+}
+
+.tag-filter-clear-btn {
+    background: transparent;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--radius-s);
+    padding: var(--size-2-1) var(--size-4-2);
+    font-size: var(--font-ui-smaller);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+}
+
+.tag-filter-clear-btn:hover {
+    background: var(--background-modifier-hover);
+    color: var(--text-normal);
+    border-color: var(--background-modifier-border-hover);
+}
+
+.tag-filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-2-2);
+}
+
+.tag-filter-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--size-2-1);
+    padding: var(--size-2-2) var(--size-4-2);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-size: var(--font-ui-small);
+    border: 1px solid transparent;
+    background: var(--background-modifier-hover);
+}
+
+.tag-filter-button:hover {
+    background: var(--background-modifier-hover-hover);
+    transform: translateY(-1px);
+}
+
+.tag-filter-button.include {
+    background: var(--background-modifier-success);
+    color: var(--text-on-accent);
+    border-color: var(--background-modifier-success-border);
+}
+
+.tag-filter-button.include:hover {
+    background: var(--background-modifier-success-hover);
+}
+
+.tag-filter-button.exclude {
+    background: var(--background-modifier-error);
+    color: var(--text-on-accent);
+    border-color: var(--background-modifier-error-border);
+}
+
+.tag-filter-button.exclude:hover {
+    background: var(--background-modifier-error-hover);
+}
+
+.tag-text {
+    font-family: var(--font-monospace);
+    font-weight: 500;
+}
+
+.tag-count {
+    font-size: var(--font-ui-smaller);
+    color: var(--text-muted);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.tag-filter-button.include .tag-count,
+.tag-filter-button.exclude .tag-count {
+    color: inherit;
+    opacity: 0.9;
+}
+
+.tag-filter-empty {
+    padding: var(--size-4-3);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-ui-small);
+    font-style: italic;
+    width: 100%;
+}
+
+/* Search result styling */
+.search-result-container.is-tag-filtered {
+    border: 1px solid var(--background-modifier-success);
+}
+
+/* File List Styles */
+.tag-filter-file-list-container {
+    margin-top: var(--size-4-3);
+    border-top: 1px solid var(--background-modifier-border);
+    padding-top: var(--size-4-3);
+}
+
+.tag-filter-file-list-header {
+    font-weight: 600;
+    font-size: var(--font-ui-small);
+    color: var(--text-normal);
+    margin-bottom: var(--size-4-2);
+}
+
+.tag-filter-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2-2);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.tag-filter-file-item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--size-2-2) var(--size-4-2);
+    border-radius: var(--radius-s);
+    background: var(--background-modifier-hover);
+    transition: all 0.15s ease;
+}
+
+.tag-filter-file-item:hover {
+    background: var(--background-modifier-hover-hover);
+    transform: translateX(2px);
+}
+
+.tag-filter-file-link {
+    color: var(--text-normal);
+    font-weight: 500;
+    font-size: var(--font-ui-small);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tag-filter-file-link:hover {
+    color: var(--text-accent);
+    text-decoration: underline;
+}
+
+.tag-filter-file-path {
+    font-size: var(--font-ui-smaller);
+    color: var(--text-muted);
+    margin-top: var(--size-2-1);
+}
+
+.tag-filter-file-empty {
+    padding: var(--size-4-3);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-ui-small);
+    font-style: italic;
+}

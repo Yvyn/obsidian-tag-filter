@@ -1,0 +1,10 @@
+{
+  "id": "tag-filter",
+  "name": "Tag Filter",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Advanced tag filtering with include/exclude logic. Click tags to filter files by inclusion, exclusion, or toggle off.",
+  "author": "",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
