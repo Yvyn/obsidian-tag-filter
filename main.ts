@@ -1,36 +1,15 @@
-import { App, Plugin, PluginSettingTab, Setting, TFile, Notice } from 'obsidian';
+import { Plugin, TFile, Notice } from 'obsidian';
 
 interface TagFilterState {
 	tag: string;
 	mode: 'include' | 'exclude';
 }
 
-interface TagFilterPluginSettings {
-	showTagCount: boolean;
-	sortTagsAlphabetically: boolean;
-}
-
-const DEFAULT_SETTINGS: TagFilterPluginSettings = {
-	showTagCount: true,
-	sortTagsAlphabetically: true,
-};
-
 export default class TagFilterPlugin extends Plugin {
-	settings!: TagFilterPluginSettings;
 	private activeFilters: TagFilterState[] = [];
 	private tagBarEl: HTMLElement | null = null;
 
 	async onload() {
-		await this.loadSettings();
-
-		this.addSettingTab(new TagFilterSettingTab(this.app, this));
-
-		this.addCommand({
-			id: 'toggle-tag-bar',
-			name: 'Toggle Tag Filter Bar',
-			callback: () => this.toggleTagBar(),
-		});
-
 		this.registerEvent(
 			this.app.metadataCache.on('changed', (file) => {
 				if (file instanceof TFile) this.refreshTagBar();
@@ -114,11 +93,6 @@ export default class TagFilterPlugin extends Plugin {
 		this.renderTagBar();
 	}
 
-	public toggleTagBar() {
-		this.injectTagBar();
-		this.tagBarEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-	}
-
 	private renderTagBar() {
 		if (!this.tagBarEl) return;
 
@@ -132,12 +106,7 @@ export default class TagFilterPlugin extends Plugin {
 		}
 
 		const tags = Array.from(tagMap.entries());
-
-		if (this.settings.sortTagsAlphabetically) {
-			tags.sort((a, b) => a[0].localeCompare(b[0]));
-		} else {
-			tags.sort((a, b) => b[1] - a[1]);
-		}
+		tags.sort((a, b) => a[0].localeCompare(b[0]));
 
 		const header = this.tagBarEl.createDiv('tag-filter-header');
 		header.createSpan({ text: '🏷️ Filter:' });
@@ -152,7 +121,7 @@ export default class TagFilterPlugin extends Plugin {
 
 		const tagList = this.tagBarEl.createDiv('tag-filter-list');
 
-		for (const [tag, count] of tags) {
+		for (const [tag] of tags) {
 			const tagButton = tagList.createDiv('tag-filter-button');
 
 			const filterState = this.activeFilters.find(f => f.tag === tag);
@@ -161,10 +130,6 @@ export default class TagFilterPlugin extends Plugin {
 			}
 
 			tagButton.createSpan('tag-text').textContent = `#${tag}`;
-
-			if (this.settings.showTagCount) {
-				tagButton.createSpan('tag-count').textContent = `(${count})`;
-			}
 
 			tagButton.onclick = () => this.cycleTagFilter(tag);
 		}
@@ -312,51 +277,5 @@ export default class TagFilterPlugin extends Plugin {
 
 	public refreshTagBar() {
 		this.renderTagBar();
-	}
-
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
-
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
-}
-
-class TagFilterSettingTab extends PluginSettingTab {
-	plugin: TagFilterPlugin;
-
-	constructor(app: App, plugin: TagFilterPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
-
-		containerEl.createEl('h2', { text: 'Tag Filter Settings' });
-
-		new Setting(containerEl)
-			.setName('Show tag count')
-			.setDesc('Display the number of files for each tag')
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.showTagCount)
-				.onChange(async (value) => {
-					this.plugin.settings.showTagCount = value;
-					await this.plugin.saveSettings();
-					this.plugin.refreshTagBar();
-				}));
-
-		new Setting(containerEl)
-			.setName('Sort tags alphabetically')
-			.setDesc('Sort tags by name instead of by count')
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.sortTagsAlphabetically)
-				.onChange(async (value) => {
-					this.plugin.settings.sortTagsAlphabetically = value;
-					await this.plugin.saveSettings();
-					this.plugin.refreshTagBar();
-				}));
 	}
 }

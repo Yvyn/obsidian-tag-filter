@@ -49,10 +49,6 @@ __export(main_exports, {
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian = require("obsidian");
-var DEFAULT_SETTINGS = {
-  showTagCount: true,
-  sortTagsAlphabetically: true
-};
 var TagFilterPlugin = class extends import_obsidian.Plugin {
   constructor() {
     super(...arguments);
@@ -61,13 +57,6 @@ var TagFilterPlugin = class extends import_obsidian.Plugin {
   }
   onload() {
     return __async(this, null, function* () {
-      yield this.loadSettings();
-      this.addSettingTab(new TagFilterSettingTab(this.app, this));
-      this.addCommand({
-        id: "toggle-tag-bar",
-        name: "Toggle Tag Filter Bar",
-        callback: () => this.toggleTagBar()
-      });
       this.registerEvent(
         this.app.metadataCache.on("changed", (file) => {
           if (file instanceof import_obsidian.TFile)
@@ -141,11 +130,6 @@ var TagFilterPlugin = class extends import_obsidian.Plugin {
     }
     this.renderTagBar();
   }
-  toggleTagBar() {
-    var _a;
-    this.injectTagBar();
-    (_a = this.tagBarEl) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
   renderTagBar() {
     if (!this.tagBarEl)
       return;
@@ -157,11 +141,7 @@ var TagFilterPlugin = class extends import_obsidian.Plugin {
       this.applyToFileExplorer();
     }
     const tags = Array.from(tagMap.entries());
-    if (this.settings.sortTagsAlphabetically) {
-      tags.sort((a, b) => a[0].localeCompare(b[0]));
-    } else {
-      tags.sort((a, b) => b[1] - a[1]);
-    }
+    tags.sort((a, b) => a[0].localeCompare(b[0]));
     const header = this.tagBarEl.createDiv("tag-filter-header");
     header.createSpan({ text: "\u{1F3F7}\uFE0F Filter:" });
     const clearButton = header.createEl("button", { text: "Clear All" });
@@ -172,16 +152,13 @@ var TagFilterPlugin = class extends import_obsidian.Plugin {
       this.renderTagBar();
     };
     const tagList = this.tagBarEl.createDiv("tag-filter-list");
-    for (const [tag, count] of tags) {
+    for (const [tag] of tags) {
       const tagButton = tagList.createDiv("tag-filter-button");
       const filterState = this.activeFilters.find((f) => f.tag === tag);
       if (filterState) {
         tagButton.addClass(filterState.mode === "include" ? "include" : "exclude");
       }
       tagButton.createSpan("tag-text").textContent = `#${tag}`;
-      if (this.settings.showTagCount) {
-        tagButton.createSpan("tag-count").textContent = `(${count})`;
-      }
       tagButton.onclick = () => this.cycleTagFilter(tag);
     }
     if (tags.length === 0) {
@@ -307,37 +284,6 @@ var TagFilterPlugin = class extends import_obsidian.Plugin {
   }
   refreshTagBar() {
     this.renderTagBar();
-  }
-  loadSettings() {
-    return __async(this, null, function* () {
-      this.settings = Object.assign({}, DEFAULT_SETTINGS, yield this.loadData());
-    });
-  }
-  saveSettings() {
-    return __async(this, null, function* () {
-      yield this.saveData(this.settings);
-    });
-  }
-};
-var TagFilterSettingTab = class extends import_obsidian.PluginSettingTab {
-  constructor(app, plugin) {
-    super(app, plugin);
-    this.plugin = plugin;
-  }
-  display() {
-    const { containerEl } = this;
-    containerEl.empty();
-    containerEl.createEl("h2", { text: "Tag Filter Settings" });
-    new import_obsidian.Setting(containerEl).setName("Show tag count").setDesc("Display the number of files for each tag").addToggle((toggle) => toggle.setValue(this.plugin.settings.showTagCount).onChange((value) => __async(this, null, function* () {
-      this.plugin.settings.showTagCount = value;
-      yield this.plugin.saveSettings();
-      this.plugin.refreshTagBar();
-    })));
-    new import_obsidian.Setting(containerEl).setName("Sort tags alphabetically").setDesc("Sort tags by name instead of by count").addToggle((toggle) => toggle.setValue(this.plugin.settings.sortTagsAlphabetically).onChange((value) => __async(this, null, function* () {
-      this.plugin.settings.sortTagsAlphabetically = value;
-      yield this.plugin.saveSettings();
-      this.plugin.refreshTagBar();
-    })));
   }
 };
 //# sourceMappingURL=main.js.map

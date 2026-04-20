@@ -1,77 +1,61 @@
-# Tag Filter Plugin for Obsidian
+# Tag Filter — Obsidian Plugin
 
-Розширення для Obsidian, яке дозволяє фільтрувати файли за тегами з підтримкою включення/виключення.
+Advanced tag filtering with include/exclude logic. Click tags to filter files by inclusion, exclusion, or toggle off.
 
-## Можливості
+## Features
 
-- **Відображення всіх тегів** у лівій бічній панелі
-- **Три стани фільтрації** для кожного тегу:
-  - Перший клік: показати файли **з** цим тегом (зелений)
-  - Другий клік: показати файли **без** цього тегу (червоний)
-  - Третій клік: зняти фільтр
-- **Множинна фільтрація** - обирайте кілька тегів для складних фільтрів
-- **Автоматичне додавання тегів** - нові файли отримують усі активні теги включення
-- **Динамічне оновлення** - документи ховаються, якщо перестають відповідати фільтру
+- **All tags in the sidebar** — displayed in the left panel, sorted alphabetically
+- **Three filter states** per tag:
+  - First click: show files **with** this tag (green)
+  - Second click: show files **without** this tag (red)
+  - Third click: clear the filter
+- **Multi-tag filtering** — combine multiple tags for complex filters
+- **Auto-tagging** — new files automatically receive all active inclusion tags
+- **Dynamic updates** — files are hidden as soon as they no longer match the filter
 
-## Встановлення
+## Installation
 
-### Спосіб 1: Ручне встановлення
+### Manual
 
-1. Склонуйте або завантажте цей репозиторій
-2. Скопіюйте папку `obsidian-tag-filter` у папку плагінів Obsidian:
-   - Windows: `%APPDATA%\Obsidian\Plugins\`
-   - macOS: `~/Library/Application Support/Obsidian/Plugins/`
-   - Linux: `~/.config/obsidian/Plugins/`
-3. Зберіть плагін:
-   ```bash
-   cd obsidian-tag-filter
-   npm install
-   npm run build
-   ```
-4. Увімкніть плагін в Obsidian: `Settings` → `Community plugins` → `Tag Filter`
+1. Download the latest release (`main.js`, `manifest.json`, `styles.css`)
+2. Copy the files into your vault's plugins folder:
+   - Windows: `%APPDATA%\Obsidian\plugins\tag-filter\`
+   - macOS: `~/Library/Application Support/obsidian/plugins/tag-filter/`
+   - Linux: `~/.config/obsidian/plugins/tag-filter/`
+3. Enable the plugin in Obsidian: `Settings` → `Community plugins` → **Tag Filter**
 
-### Спосіб 2: BRAT (Beta Reviewers Auto-update Tool)
+### BRAT (Beta Reviewers Auto-update Tool)
 
-1. Встановіть плагін BRAT з Community Plugins
-2. Додайте цей репозиторій через BRAT
+1. Install the BRAT plugin from Community Plugins
+2. Add this repository via BRAT: `Yvyn/obsidian-tag-filter`
 
-## Використання
+## Usage
 
-1. Відкрийте панель **Tag Filter** у лівій бічній панелі
-2. Клікайте по тегах для фільтрації:
-   - 🟢 **Зелений** = показати файли з цим тегом
-   - 🔴 **Червоний** = показати файли без цього тегу
-3. Створіть новий файл - він автоматично отримає всі зелені теги
-4. Видаліть тег з файлу - файл зникне з виду, якщо не відповідає фільтру
+1. Open the **Tag Filter** panel in the left sidebar
+2. Click tags to filter:
+   - 🟢 **Green** — show files that have this tag
+   - 🔴 **Red** — show files that do NOT have this tag
+3. Create a new file — it will automatically receive all green (inclusion) tags
+4. Remove a tag from a file — the file disappears if it no longer matches the filter
 
-## Гарячі клавіші
+## Examples
 
-- **Правий клік** на тегу - контекстне меню з опціями
-- **Clear All** - зняти всі фільтри
-
-## Налаштування
-
-- **Show tag count** - показувати кількість файлів для кожного тегу
-- **Sort tags alphabetically** - сортувати теги за алфавітом (замість за кількістю)
-
-## Приклади використання
-
-### Фільтр для певних тегів
+### Include filter
 ```
-#work (зелений) + #urgent (зелений) = файли з обома тегами
+#work (green) + #urgent (green)  →  files with both tags
 ```
 
-### Виключення тегів
+### Exclude filter
 ```
-#work (зелений) + #draft (червоний) = файли з #work але без #draft
-```
-
-### Складний фільтр
-```
-#project-a (зелений) + #meeting (червоний) + #archive (червоний)
-= файли проекту A без зустрічей та архіву
+#work (green) + #draft (red)  →  files tagged #work but NOT #draft
 ```
 
-## Ліцензія
+### Complex filter
+```
+#project-a (green) + #meeting (red) + #archive (red)
+→  project-a files, excluding meetings and archived notes
+```
 
-MIT
+## License
+
+[MIT](LICENSE)
